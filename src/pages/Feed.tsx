@@ -11,6 +11,8 @@ import {
   Eye,
   Sparkles,
   X,
+  Filter,
+  ArrowUpDown,
 } from 'lucide-react'
 import { feedPosts } from '../data'
 import { useFavorites } from '../hooks/useFavorites'
@@ -97,44 +99,52 @@ export function FeedPage({ addToast }: FeedPageProps) {
   const hasActiveFilters = selectedArea || selectedLevel || selectedTime
 
   return (
-    <div className="container app-page">
+    <div className="container app-page" style={{ paddingBottom: '6rem' }}>
       {/* Page header */}
-      <section className="page-hero compact" aria-labelledby="feed-title">
-        <div className="eyebrow subtle">
-          <Search size={14} aria-hidden="true" />
-          Feed tổng hợp từ cộng đồng
-        </div>
-        <h1 id="feed-title" className="page-title">
-          Tìm bài đăng đúng nhu cầu
+      <section className="page-hero compact container" style={{ paddingBottom: '3.5rem', paddingTop: '4rem' }}>
+        <h1 className="page-title" style={{ fontSize: '3rem', letterSpacing: '-0.02em', marginBottom: '1rem' }}>
+          Khám phá feed <span className="gradient-text">cộng đồng</span>
         </h1>
-        <p className="page-subtitle">
-          Tổng hợp từ các nhóm cầu lông, lọc theo khu vực, trình độ và khung giờ chỉ trong vài thao tác.
+        <p className="page-subtitle" style={{ fontSize: '1.1rem', color: 'hsl(var(--muted-foreground))', maxWidth: '600px' }}>
+          Hệ thống tổng hợp bài đăng từ 10+ cộng đồng cầu lông lớn nhất Việt Nam, giúp bạn tìm kèo nhanh hơn bao giờ hết.
         </p>
       </section>
 
-      <div className="feed-layout">
+      <div className="feed-layout" style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: '2.5rem' }}>
         {/* Sidebar */}
-        <aside className="sidebar-card glass" aria-label="Bộ lọc bài đăng">
-          <h2 style={{ fontSize: '1rem', marginBottom: '0.25rem' }}>Bộ lọc thông minh</h2>
+        <aside className="sidebar-card glass" style={{ 
+          borderRadius: 'var(--radius-2xl)', 
+          padding: '2.25rem',
+          height: 'fit-content',
+          position: 'sticky',
+          top: '6rem'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', fontWeight: 800, fontSize: '1.1rem' }}>
+            <Filter size={18} /> Bộ lọc thông minh
+          </div>
 
           {/* Search */}
-          <div className="filter-group">
-            <label htmlFor="feed-search">Từ khóa</label>
-            <div className="search-box">
-              <Search size={16} aria-hidden="true" />
+          <div className="filter-group" style={{ marginBottom: '2rem' }}>
+            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.5rem', color: 'hsl(var(--muted-foreground))' }}>Từ khóa</label>
+            <div className="search-box" style={{ 
+              background: 'hsla(var(--foreground), 0.05)', 
+              borderRadius: 'var(--radius-full)', 
+              padding: '0.35rem 1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              border: '1.5px solid transparent',
+              transition: 'all 0.3s'
+            }}>
+              <Search size={16} style={{ opacity: 0.5 }} />
               <input
-                id="feed-search"
                 value={rawSearch}
                 onChange={(e) => setRawSearch(e.target.value)}
                 placeholder="Tìm kèo, sân, vợt..."
-                aria-label="Tìm kiếm bài đăng"
+                style={{ background: 'none', border: 'none', width: '100%', outline: 'none', fontSize: '0.9rem', color: 'inherit' }}
               />
               {rawSearch && (
-                <button
-                  className="search-clear"
-                  onClick={() => setRawSearch('')}
-                  aria-label="Xoá tìm kiếm"
-                >
+                <button onClick={() => setRawSearch('')} style={{ background: 'none', border: 'none', cursor: 'pointer', opacity: 0.5 }}>
                   <X size={14} />
                 </button>
               )}
@@ -142,15 +152,25 @@ export function FeedPage({ addToast }: FeedPageProps) {
           </div>
 
           {/* Area filter */}
-          <div className="filter-group">
-            <label>Khu vực</label>
-            <div className="chip-wrap">
+          <div className="filter-group" style={{ marginBottom: '2rem' }}>
+            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.75rem', color: 'hsl(var(--muted-foreground))' }}>Khu vực</label>
+            <div className="chip-wrap" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
               {AREAS.map((area) => (
                 <button
                   key={area}
                   className={`filter-chip${selectedArea === area ? ' active' : ''}`}
                   onClick={() => setSelectedArea(selectedArea === area ? null : area)}
-                  aria-pressed={selectedArea === area}
+                  style={{ 
+                    padding: '0.5rem 1rem', 
+                    fontSize: '0.85rem', 
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    background: selectedArea === area ? 'hsl(var(--primary))' : 'hsla(var(--foreground), 0.04)',
+                    color: selectedArea === area ? 'white' : 'inherit',
+                    borderRadius: 'var(--radius-full)',
+                    border: 'none',
+                    transition: 'all 0.2s'
+                  }}
                 >
                   {area}
                 </button>
@@ -159,34 +179,27 @@ export function FeedPage({ addToast }: FeedPageProps) {
           </div>
 
           {/* Level filter */}
-          <div className="filter-group">
-            <label>Trình độ</label>
-            <div className="chip-wrap">
+          <div className="filter-group" style={{ marginBottom: '2rem' }}>
+            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.75rem', color: 'hsl(var(--muted-foreground))' }}>Trình độ</label>
+            <div className="chip-wrap" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
               {LEVELS.map((lvl) => (
                 <button
                   key={lvl}
                   className={`filter-chip${selectedLevel === lvl ? ' active' : ''}`}
                   onClick={() => setSelectedLevel(selectedLevel === lvl ? null : lvl)}
-                  aria-pressed={selectedLevel === lvl}
+                  style={{ 
+                    padding: '0.5rem 1rem', 
+                    fontSize: '0.85rem', 
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    background: selectedLevel === lvl ? 'hsl(var(--primary))' : 'hsla(var(--foreground), 0.04)',
+                    color: selectedLevel === lvl ? 'white' : 'inherit',
+                    borderRadius: 'var(--radius-full)',
+                    border: 'none',
+                    transition: 'all 0.2s'
+                  }}
                 >
                   {lvl}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Time filter */}
-          <div className="filter-group">
-            <label>Khung giờ</label>
-            <div className="chip-wrap">
-              {TIMES.map((t) => (
-                <button
-                  key={t}
-                  className={`filter-chip${selectedTime === t ? ' active' : ''}`}
-                  onClick={() => setSelectedTime(selectedTime === t ? null : t)}
-                  aria-pressed={selectedTime === t}
-                >
-                  {t}
                 </button>
               ))}
             </div>
@@ -195,61 +208,81 @@ export function FeedPage({ addToast }: FeedPageProps) {
           {/* Clear filters */}
           {hasActiveFilters && (
             <button
-              className="clear-filters-btn"
+              className="cta-button secondary small"
               onClick={() => {
                 setSelectedArea(null)
                 setSelectedLevel(null)
                 setSelectedTime(null)
               }}
+              style={{ width: '100%', marginTop: '1rem', fontSize: '0.85rem', borderRadius: '1rem' }}
             >
-              <X size={13} /> Xoá bộ lọc
+              <X size={13} style={{ marginRight: '0.5rem' }} /> Xoá tất cả bộ lọc
             </button>
           )}
 
-          <div className="sidebar-note" role="note">
-            <Sparkles size={15} aria-hidden="true" />
-            Hệ thống gợi ý các bài gần bạn nhất theo loại nội dung đang chọn.
+          <div style={{ marginTop: '2.5rem', padding: '1.25rem', borderRadius: '1.5rem', background: 'hsla(var(--primary), 0.06)', display: 'flex', gap: '1rem' }}>
+            <Sparkles size={20} style={{ color: 'hsl(var(--primary))', flexShrink: 0 }} />
+            <p style={{ fontSize: '0.8rem', color: 'hsl(var(--muted-foreground))', lineHeight: 1.5 }}>
+              Hệ thống AI tự động gợi ý bài đăng phù hợp với trình độ của bạn.
+            </p>
           </div>
         </aside>
 
         {/* Main feed content */}
         <div className="feed-content">
           {/* Toolbar */}
-          <div className="feed-toolbar glass" role="toolbar" aria-label="Bộ lọc feed">
-            <div className="tab-row" role="tablist">
+          <div className="feed-toolbar glass" style={{ 
+            borderRadius: 'var(--radius-xl)', 
+            padding: '1rem 1.5rem',
+            marginBottom: '2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            background: 'var(--glass-bg)',
+            borderWidth: '1.5px'
+          }}>
+            <div className="tab-row" style={{ display: 'flex', gap: '0.5rem' }}>
               {tabs.map((tab) => (
                 <button
                   key={tab.type}
                   className={`tab-pill${currentType === tab.type ? ' active' : ''}`}
-                  role="tab"
-                  aria-selected={currentType === tab.type}
                   onClick={() => handleTabChange(tab.type)}
+                  style={{ 
+                    padding: '0.75rem 1.5rem', 
+                    fontSize: '0.9rem', 
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    background: currentType === tab.type ? 'hsl(var(--card))' : 'transparent',
+                    color: currentType === tab.type ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))',
+                    borderRadius: 'var(--radius-full)',
+                    border: 'none',
+                    boxShadow: currentType === tab.type ? 'var(--shadow-soft)' : 'none',
+                    transition: 'all 0.3s'
+                  }}
                 >
                   {tab.label}
                 </button>
               ))}
             </div>
-            <div className="toolbar-bottom">
-              <div className="chip-wrap">
-                {SORTS.map((s) => (
-                  <button
-                    key={s}
-                    className={`filter-chip${sortMode === s ? ' active' : ''}`}
-                    onClick={() => setSortMode(s)}
-                    aria-pressed={sortMode === s}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', fontWeight: 600, color: 'hsl(var(--muted-foreground))' }}>
+                  <ArrowUpDown size={14} /> Sắp xếp: 
+                  <select 
+                    value={sortMode}
+                    onChange={(e) => setSortMode(e.target.value as SortMode)}
+                    style={{ border: 'none', background: 'none', fontWeight: 700, color: 'hsl(var(--foreground))', cursor: 'pointer' }}
                   >
-                    {s}
-                  </button>
-                ))}
-              </div>
-              <span className="result-count" aria-live="polite">
-                {filtered.length} bài
+                    {SORTS.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
+               </div>
+               <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'hsla(var(--foreground), 0.05)', padding: '0.35rem 0.85rem', borderRadius: '1rem' }}>
+                {filtered.length} bài đăng
               </span>
             </div>
           </div>
 
           {/* Post list */}
-          <div className="feed-list" role="feed" aria-label="Danh sách bài đăng" aria-busy={loading}>
+          <div className="feed-list" style={{ display: 'grid', gap: '1.5rem' }}>
             {loading ? (
               Array.from({ length: 3 }).map((_, i) => <PostCardSkeleton key={i} />)
             ) : filtered.length === 0 ? (
@@ -258,53 +291,74 @@ export function FeedPage({ addToast }: FeedPageProps) {
               filtered.map((post) => (
                 <article
                   key={post.id}
-                  className={`post-card ${post.accent}`}
-                  aria-label={post.title}
+                  className="post-card"
+                  style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'auto 1fr auto', 
+                    gap: '2rem',
+                    alignItems: 'start'
+                  }}
                 >
-                  <div className="post-topline">
-                    <span className={`card-chip ${post.accent}`}>
-                      {post.type === 'match' ? '🏸 Tìm kèo' : post.type === 'court' ? '🏟️ Pass sân' : '🛒 Mua bán'}
-                    </span>
-                    <div className="post-topline-right">
-                      <span className="muted-inline">
-                        <Eye size={12} /> {post.views}
+                  <div style={{ width: '8rem', height: '8rem', borderRadius: '1.25rem', overflow: 'hidden' }}>
+                    <img src={post.image || "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?auto=format&fit=crop&q=80&w=200"} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                  
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                      <span style={{ 
+                        fontSize: '0.7rem', 
+                        fontWeight: 800, 
+                        textTransform: 'uppercase', 
+                        background: 'hsla(var(--primary), 0.1)', 
+                        color: 'hsl(var(--primary))',
+                        padding: '0.25rem 0.65rem',
+                        borderRadius: '0.5rem'
+                      }}>{post.type === 'match' ? '🏸 KÈO ĐẤU' : post.type === 'court' ? '🏟️ PASS SÂN' : '🛒 MUA BÁN'}</span>
+                      <span style={{ fontSize: '0.8rem', color: 'hsl(var(--muted-foreground))' }}>• {post.postedAt}</span>
+                    </div>
+
+                    <h3 style={{ fontSize: '1.35rem', fontWeight: 850, marginBottom: '0.75rem', letterSpacing: '-0.02em' }}>{post.title}</h3>
+                    <p style={{ color: 'hsl(var(--muted-foreground))', lineHeight: 1.5, marginBottom: '1.25rem', fontSize: '0.95rem' }}>{post.excerpt}</p>
+
+                    <div className="post-meta" style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem' }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: 600 }}>
+                        <MapPinned size={14} style={{ color: 'hsl(var(--primary))' }} /> {post.area}
                       </span>
-                      <span className="muted-inline">{post.distance}</span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: 600 }}>
+                        <Swords size={14} style={{ color: 'hsl(var(--rose))' }} /> {post.level}
+                      </span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: 600 }}>
+                        <Clock3 size={14} style={{ color: 'hsl(var(--violet))' }} /> {post.time}
+                      </span>
                     </div>
                   </div>
 
-                  <h3>{post.title}</h3>
-                  <p>{post.excerpt}</p>
-
-                  <div className="post-meta">
-                    <span><MapPinned size={14} aria-hidden="true" /> {post.area}</span>
-                    <span><Swords size={14} aria-hidden="true" /> {post.level}</span>
-                    <span><Clock3 size={14} aria-hidden="true" /> {post.time}</span>
-                  </div>
-
-                  <div className="post-tags">
-                    {post.tags.map((tag) => (
-                      <span key={tag}>{tag}</span>
-                    ))}
-                  </div>
-
-                  <div className="post-footer">
-                    <div>
-                      <strong>{post.club}</strong>
-                      <small>{post.postedAt}</small>
-                    </div>
-                    <div className="post-actions">
-                      <button
-                        className={`fav-button${isFavorite(post.id) ? ' active' : ''}`}
-                        onClick={() => handleFavorite(post.id, post.title)}
-                        aria-label={isFavorite(post.id) ? 'Xoá khỏi quan tâm' : 'Thêm vào quan tâm'}
-                        aria-pressed={isFavorite(post.id)}
-                      >
-                        {isFavorite(post.id) ? <HeartOff size={15} /> : <Heart size={15} />}
-                      </button>
-                      <button type="button" className="detail-btn" aria-label={`Xem chi tiết: ${post.title}`}>
-                        Xem chi tiết
-                        <ChevronRight size={15} aria-hidden="true" />
+                  <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between', alignItems: 'end' }}>
+                    <button
+                      className={`fav-button${isFavorite(post.id) ? ' active' : ''}`}
+                      onClick={() => handleFavorite(post.id, post.title)}
+                      style={{ 
+                        width: '40px', 
+                        height: '40px', 
+                        borderRadius: '50%', 
+                        border: 'none', 
+                        background: isFavorite(post.id) ? 'hsla(var(--rose), 0.1)' : 'hsla(var(--foreground), 0.05)',
+                        color: isFavorite(post.id) ? 'hsl(var(--rose))' : 'inherit',
+                        cursor: 'pointer',
+                        display: 'grid',
+                        placeItems: 'center',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      {isFavorite(post.id) ? <HeartOff size={18} fill="currentColor" /> : <Heart size={18} />}
+                    </button>
+                    
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ fontSize: '0.8rem', color: 'hsl(var(--muted-foreground))', marginBottom: '0.5rem' }}>
+                         <Eye size={12} style={{ verticalAlign: 'middle', marginRight: '0.2rem' }} /> {post.views} xem
+                      </div>
+                      <button className="cta-button primary small" style={{ padding: '0.65rem 1.25rem', fontSize: '0.9rem', borderRadius: '1rem' }}>
+                        Chi tiết <ChevronRight size={16} />
                       </button>
                     </div>
                   </div>
@@ -320,16 +374,16 @@ export function FeedPage({ addToast }: FeedPageProps) {
 
 function EmptyState({ search, onClear }: { search: string; onClear: () => void }) {
   return (
-    <div className="empty-state" role="status">
-      <span className="empty-emoji">🏸</span>
-      <h3>Không tìm thấy bài đăng</h3>
-      <p>
+    <div style={{ padding: '6rem 3rem', textAlign: 'center', borderRadius: '2rem', background: 'hsla(var(--foreground), 0.02)', border: '2px dashed var(--border)' }}>
+      <div style={{ fontSize: '4rem', marginBottom: '1.5rem' }}>🔍</div>
+      <h3 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '1rem' }}>Không tìm thấy bài đăng</h3>
+      <p style={{ color: 'hsl(var(--muted-foreground))', marginBottom: '2rem', maxWidth: '400px', margin: '0 auto 2rem' }}>
         {search
-          ? `Không có kết quả cho "${search}". Hãy thử từ khác hoặc bỏ bộ lọc.`
-          : 'Chưa có bài đăng trong danh mục này. Hãy thử tab khác.'}
+          ? `Không có kết quả nào phù hợp với từ khóa "${search}". Hãy thử từ khóa khác hoặc xóa bộ lọc.`
+          : 'Hiện tại chưa có bài đăng nào trong mục này.'}
       </p>
       {search && (
-        <button className="cta-button secondary" onClick={onClear}>
+        <button className="cta-button secondary" onClick={onClear} style={{ borderRadius: '1rem' }}>
           Xoá tìm kiếm
         </button>
       )}
