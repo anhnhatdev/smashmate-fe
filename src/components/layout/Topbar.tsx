@@ -9,7 +9,6 @@ import {
   Trophy,
   History,
   CreditCard,
-  Settings,
   Palette,
   Sun,
   Moon,
@@ -17,6 +16,7 @@ import {
   Trees,
   Sunset as SunsetIcon,
   Flower2,
+  Sparkles,
 } from 'lucide-react'
 
 const THEMES = [
@@ -45,7 +45,7 @@ export function Topbar() {
     { path: '/feed', label: 'Tìm kèo', icon: <Search size={18} /> },
     { path: '/map', label: 'Sân cầu', icon: <MapPinned size={18} /> },
     { path: '/ranking', label: 'Xếp hạng', icon: <Trophy size={18} /> },
-    { path: '/pricing', label: 'Dịch vụ', icon: <CreditCard size={18} /> },
+    { path: '/pricing', label: 'Gói dùng', icon: <CreditCard size={18} /> },
   ]
 
   const rightLinks = [
@@ -55,28 +55,45 @@ export function Topbar() {
 
   return (
     <header className="topbar" style={{ padding: '1rem 0', background: 'transparent' }}>
-      <div className="container topbar-inner glass" style={{ 
-        borderRadius: 'var(--radius-full)', 
+      <div className="container topbar-inner" style={{ 
+        background: 'white',
+        borderRadius: '999px',
         padding: '0.6rem 1.75rem',
-        borderWidth: '1.5px',
-        boxShadow: 'var(--shadow-lg)',
-        background: 'var(--glass-bg)',
+        border: '1.5px solid var(--border)',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
       }}>
-        <div className="brand-row">
-          <Link to="/" className="brand">
-            <span className="brand-mark" style={{ filter: 'drop-shadow(0 4px 10px hsla(var(--primary), 0.3))' }}>🏸</span>
-            <span className="brand-text" style={{ fontSize: '1.4rem' }}>
-              Smash<span>Mate</span>
+        <div className="brand-row" style={{ gap: '1.5rem' }}>
+          <Link to="/" className="brand" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{ 
+              width: '2.5rem', 
+              height: '2.5rem', 
+              background: 'hsl(var(--primary))', 
+              borderRadius: '0.75rem', 
+              display: 'grid', 
+              placeItems: 'center',
+              boxShadow: '0 8px 15px hsla(var(--primary), 0.25)' 
+            }}>
+              <span style={{ fontSize: '1.4rem' }}>🏸</span>
+            </div>
+            <span style={{ fontSize: '1.4rem', fontWeight: 900, letterSpacing: '-0.03em', color: 'hsl(var(--foreground))' }}>
+              SmashMate<span style={{ color: 'hsl(var(--primary))' }}>.</span>
             </span>
           </Link>
 
-          <nav className="desktop-nav" style={{ marginLeft: '1rem' }}>
+          <nav className="desktop-only" style={{ display: 'flex', gap: '0.5rem' }}>
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
-                style={{ fontSize: '0.95rem', fontWeight: 600 }}
+                style={{ 
+                  padding: '0.6rem 1.25rem', 
+                  borderRadius: '999px', 
+                  fontSize: '0.92rem', 
+                  fontWeight: 700,
+                  color: location.pathname === link.path ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))',
+                  background: location.pathname === link.path ? 'hsla(var(--primary), 0.08)' : 'transparent',
+                  transition: 'all 0.2s'
+                }}
               >
                 {link.label}
               </Link>
@@ -84,35 +101,41 @@ export function Topbar() {
           </nav>
         </div>
 
-        <div className="topbar-actions">
-          <nav className="desktop-nav" style={{ marginRight: '0.5rem' }}>
+        <div className="topbar-actions" style={{ gap: '1rem' }}>
+          <div className="desktop-only" style={{ display: 'flex', gap: '0.5rem' }}>
             {rightLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
-                style={{ fontSize: '0.95rem', fontWeight: 500 }}
+                style={{ 
+                  width: '40px', 
+                  height: '40px', 
+                  borderRadius: '50%',
+                  display: 'grid',
+                  placeItems: 'center',
+                  background: location.pathname === link.path ? 'hsla(var(--primary), 0.08)' : 'hsla(var(--foreground), 0.05)',
+                  color: location.pathname === link.path ? 'hsl(var(--primary))' : 'inherit',
+                  transition: 'all 0.2s'
+                }}
               >
                 {link.icon}
               </Link>
             ))}
-          </nav>
+          </div>
 
           <div style={{ position: 'relative' }}>
             <button
-              className="icon-button"
               onClick={() => setThemeOpen(!themeOpen)}
-              aria-label="Chọn chủ đề"
               style={{ 
-                background: 'hsla(var(--foreground), 0.05)', 
                 width: '40px', 
                 height: '40px', 
                 borderRadius: '50%',
                 display: 'grid',
                 placeItems: 'center',
+                background: 'hsla(var(--foreground), 0.05)',
                 border: 'none',
                 cursor: 'pointer',
-                color: 'hsl(var(--foreground))'
+                transition: 'all 0.2s'
               }}
             >
               <Palette size={20} />
@@ -120,8 +143,7 @@ export function Topbar() {
 
             {themeOpen && (
               <div
-                className="theme-menu glass show"
-                role="menu"
+                className="glass"
                 style={{ 
                   position: 'absolute', 
                   right: 0, 
@@ -129,13 +151,14 @@ export function Topbar() {
                   width: '180px', 
                   borderRadius: '1.5rem',
                   padding: '0.75rem',
-                  zIndex: 100 
+                  zIndex: 100,
+                  background: 'white',
+                  border: '1.5px solid var(--border)'
                 }}
               >
                 {THEMES.map((theme) => (
                   <button
                     key={theme.id}
-                    role="menuitem"
                     onClick={() => changeTheme(theme.id)}
                     style={{ 
                       width: '100%', 
@@ -148,15 +171,14 @@ export function Topbar() {
                       background: 'transparent',
                       cursor: 'pointer',
                       color: 'hsl(var(--foreground))',
-                      fontWeight: 600,
-                      fontSize: '0.9rem',
-                      textAlign: 'left',
-                      transition: 'background 0.2s'
+                      fontWeight: 700,
+                      fontSize: '0.85rem',
+                      textAlign: 'left'
                     }}
                     onMouseEnter={(e) => e.currentTarget.style.background = 'hsla(var(--foreground), 0.05)'}
                     onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                   >
-                    <span style={{ color: `hsl(var(--primary))` }}>{theme.icon}</span>
+                    <span style={{ color: 'hsl(var(--primary))' }}>{theme.icon}</span>
                     {theme.name}
                   </button>
                 ))}
@@ -164,19 +186,21 @@ export function Topbar() {
             )}
           </div>
 
+          <button className="cta-button primary small desktop-only" style={{ padding: '0.75rem 1.5rem', borderRadius: '999px', fontSize: '0.9rem' }}>
+            Mở App <Sparkles size={16} />
+          </button>
+
           <button
-            className="icon-button mobile-only"
+            className="mobile-only"
             onClick={() => setIsOpen(!isOpen)}
-            aria-expanded={isOpen}
             style={{ 
-              background: 'hsla(var(--foreground), 0.05)', 
               width: '40px', 
               height: '40px', 
               borderRadius: '50%',
               display: 'grid',
               placeItems: 'center',
-              border: 'none',
-              cursor: 'pointer'
+              background: 'hsla(var(--foreground), 0.05)',
+              border: 'none'
             }}
           >
             {isOpen ? <X size={20} /> : <Menu size={20} />}
@@ -185,13 +209,19 @@ export function Topbar() {
       </div>
 
       {isOpen && (
-        <div className="mobile-menu container glass" style={{ marginTop: '0.5rem', borderRadius: '1.5rem', padding: '1.5rem' }}>
-          <nav className="mobile-nav">
+        <div className="mobile-menu container" style={{ 
+          marginTop: '0.5rem', 
+          background: 'white', 
+          borderRadius: '1.5rem', 
+          padding: '1.5rem',
+          border: '1.5px solid var(--border)',
+          boxShadow: 'var(--shadow-lg)'
+        }}>
+          <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {[...navLinks, ...rightLinks].map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`mobile-link ${location.pathname === link.path ? 'active' : ''}`}
                 onClick={() => setIsOpen(false)}
                 style={{ 
                   display: 'flex', 
@@ -199,8 +229,10 @@ export function Topbar() {
                   gap: '1rem', 
                   padding: '1rem', 
                   borderRadius: '1rem',
-                  fontSize: '1.1rem',
-                  fontWeight: 600
+                  fontSize: '1rem',
+                  fontWeight: 800,
+                  color: location.pathname === link.path ? 'hsl(var(--primary))' : 'inherit',
+                  background: location.pathname === link.path ? 'hsla(var(--primary), 0.08)' : 'transparent'
                 }}
               >
                 {link.icon}

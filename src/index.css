@@ -1,43 +1,32 @@
 :root,
 .light {
   --background: 210 40% 98%;
-  --foreground: 224 71% 4%;
+  --foreground: 222 47% 11%; /* Slate 950 */
   --card: 0 0% 100%;
   --muted: 210 40% 96%;
-  --muted-foreground: 215 16% 46%;
-  --primary: 199 89% 48%; /* Sky Blue */
-  --secondary: 220 14% 96%;
-  --border: 214 24% 91%;
+  --muted-foreground: 215 16% 47%; /* Slate 500 */
+  --primary: 217 91% 60%; /* Blue 500 */
+  --secondary: 210 40% 96%;
+  --border: 214 32% 91%; /* Slate 200 */
   --success: 151 55% 45%;
   --warning: 32 91% 54%;
-  --rose: 342 89% 61%;
-  --violet: 255 92% 76%;
-  --glass-bg: rgba(255, 255, 255, 0.72);
-  --glass-border: rgba(255, 255, 255, 0.5);
-  --shadow-lg: 0 25px 50px -12px rgba(14, 165, 233, 0.15);
-  --shadow-soft: 0 10px 30px -5px rgba(2, 132, 199, 0.08);
-  --radius-xl: 1.75rem;
-  --radius-2xl: 2.25rem;
-  --radius-full: 999px;
+  --rose: 342 89% 61%; /* Pink 500 equivalent */
+  --violet: 262 83% 58%; /* Violet 600 */
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Tailwind shadow-lg */
+  --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* Tailwind shadow-sm */
 }
 
 .dark {
-  --background: 222 47% 11%;
+  --background: 222 47% 7%;
   --foreground: 210 40% 98%;
-  --card: 222 47% 14%;
+  --card: 222 47% 11%;
   --muted: 217 33% 17%;
   --muted-foreground: 215 20% 65%;
-  --primary: 199 89% 56%;
+  --primary: 217 91% 60%;
   --secondary: 222 47% 15%;
   --border: 222 47% 20%;
-  --success: 152 57% 43%;
-  --warning: 32 91% 60%;
-  --rose: 342 84% 67%;
-  --violet: 255 92% 78%;
-  --glass-bg: rgba(15, 23, 42, 0.75);
-  --glass-border: rgba(255, 255, 255, 0.06);
-  --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
-  --shadow-soft: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
 }
 
 .ocean {
@@ -130,10 +119,10 @@ body {
   margin: 0;
   background-color: hsl(var(--background));
   background-image: 
-    radial-gradient(at 0% 0%, hsla(var(--primary), 0.1) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, hsla(var(--violet), 0.1) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, hsla(var(--primary), 0.05) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(var(--violet), 0.05) 0px, transparent 50%);
   color: hsl(var(--foreground));
-  font-weight: 500; /* Senior feel: slightly heavier than default */
+  font-weight: 500;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -211,7 +200,7 @@ input {
 }
 
 .gradient-text {
-  background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--violet)));
+  background: linear-gradient(to right, #60a5fa, #94a3b8, #f59e0b);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
